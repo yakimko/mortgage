@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<title>Іпотека vs Інвестиції vs Оренда</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="tabs">
+    <button class="tab active">Порівняння варіантів</button>
+    <button class="tab" onclick="window.location.href='scenarios.html'">Порівняння сценаріїв</button>
+    <button class="tab" onclick="window.location.href='mortgage-calculator.html'">Розрахунок іпотеки</button>
+</div>
+
+<h1>Порівняння трьох варіантів житла та інвестицій (PLN)</h1>
+
+<h3>ІПОТЕКА</h3>
+<table>
+<tr><td>Сума іпотеки (PLN)</td><td><input id="mortgageAmount" value="1800000"></td></tr>
+<tr><td>Перший внесок %</td><td><input id="mortgageDown" value="25"></td></tr>
+<tr><td>Ефективна ставка %</td><td><input id="mortgageRate" value="5.71"></td></tr>
+<tr><td>Термін іпотеки (роки)</td><td><input id="mortgageYears" value="25"></td></tr>
+<tr><td>Переплата (PLN/міс)</td><td><input id="extraAmount" value="7500"></td></tr>
+<tr><td>Переплата X% (для варіанту 2)</td><td><input id="extraPct" value="50"></td></tr>
+<tr><td>Разові витрати на іпотечне житло (PLN, ремонт, страхування, тощо)</td><td><input id="mortgageCosts" value="50000"></td></tr>
+<tr><td>Ріст ціни квартири % рік</td><td><input id="mortgageGrowth" value="2"></td></tr>
+</table>
+
+<h3>ІНВЕСТУВАННЯ</h3>
+<table>
+<tr><td>Дохідність % річних</td><td><input id="investRate" value="7"></td></tr>
+<tr><td>Податок %</td><td><input id="investTax" value="19"></td></tr>
+<tr><td>Дивіденди % річних</td><td><input id="dividends" value="1"></td></tr>
+</table>
+
+<h3>АРЕНДА</h3>
+<table>
+<tr><td>Аренда без ком. (PLN/міс)</td><td><input id="rentBase" value="6000"></td></tr>
+<tr><td>Комунальні (PLN/міс)</td><td><input id="utilities" value="1500"></td></tr>
+<tr><td>Зростання аренди % рік</td><td><input id="rentGrowth" value="3"></td></tr>
+<tr><td>Зростання комунальних % рік</td><td><input id="utilitiesGrowth" value="2"></td></tr>
+</table>
+
+<h3>ІНШЕ</h3>
+<table>
+<tr><td>Платоспроможність (роки)</td><td><input id="solvency" value="15"></td></tr>
+</table>
+
+<h3 id="monthlyPayment">Обов'язковий щомісячний платіж по іпотеці: </h3>
+
+<h3>Результати</h3>
+<table id="result">
+<thead>
+<tr>
+<th>Показник</th>
+<th>Варіант 1<br>Повна переплата → інвестиції</th>
+<th>Варіант 2<br>Переплата + паралельне інвестування</th>
+<th>Варіант 3<br>Оренда + інвестиції</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+
+<div id="chartContainer">
+<canvas id="chart"></canvas>
+</div>
+
+<script src="formulas.js?v=6"></script>
+<script src="script.js?v=6"></script>
+
+</body>
+</html>

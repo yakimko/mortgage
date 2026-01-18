@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<title>Розрахунок можливої суми іпотеки</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="tabs">
+    <button class="tab" onclick="window.location.href='index.html'">Порівняння варіантів</button>
+    <button class="tab" onclick="window.location.href='scenarios.html'">Порівняння сценаріїв</button>
+    <button class="tab active">Розрахунок іпотеки</button>
+</div>
+
+<h1>Розрахунок можливої суми іпотеки (PLN)</h1>
+
+<h3>ПАРАМЕТРИ ІПОТЕКИ</h3>
+<table>
+<tr><td>Ефективна ставка %</td><td><input id="mortgageRate" value="5.71"></td></tr>
+<tr><td>Термін іпотеки (роки)</td><td><input id="mortgageYears" value="25"></td></tr>
+<tr><td>Перший внесок (PLN)</td><td><input id="mortgageDown" value="450000"></td></tr>
+</table>
+
+<h3>ПЛАТЕЖОСПРОМОЖНІСТЬ</h3>
+<table>
+<tr><td>Срок платежеспособності (роки)</td><td><input id="mortgageCalcSolvency" value="15"></td></tr>
+<tr><td>Доступна сума для щомісячного платежу (PLN/міс)</td><td><input id="mortgageCalcMonthlyPayment" value="15000"></td></tr>
+<tr><td>Доступна сума для переплати (PLN/міс)</td><td><input id="lumpSumPaymentMonthly" value="0"></td></tr>
+</table>
+
+<h3 id="mortgageCalcResultTitle" style="margin-top: 30px;">Результати розрахунку</h3>
+<table id="mortgageCalcResult">
+<thead>
+<tr>
+<th>Показник</th>
+<th>Значення</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+
+<div id="chartContainerMortgage" style="display: none;">
+<canvas id="chartMortgage"></canvas>
+</div>
+
+<script src="formulas.js?v=6"></script>
+<script src="mortgage-calculator.js?v=2"></script>
+
+</body>
+</html>

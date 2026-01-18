@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<title>Порівняння сценаріїв</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="tabs">
+    <button class="tab" onclick="window.location.href='index.html'">Порівняння варіантів</button>
+    <button class="tab active">Порівняння сценаріїв</button>
+    <button class="tab" onclick="window.location.href='mortgage-calculator.html'">Розрахунок іпотеки</button>
+</div>
+
+<h1>Порівняння сценаріїв з різними параметрами</h1>
+
+<h3 style="cursor: pointer; user-select: none;" onclick="toggleCollapsible('baseParams')">
+    <span id="baseParamsToggle">▼</span> Базові параметри (використовуються для всіх сценаріїв)
+</h3>
+<div id="baseParams" style="display: block;">
+    <table>
+        <tr><td>Сума іпотеки (PLN)</td><td><input id="scenarioMortgageAmount"></td></tr>
+        <tr><td>Перший внесок %</td><td><input id="scenarioMortgageDown"></td></tr>
+        <tr><td>Ефективна ставка %</td><td><input id="scenarioMortgageRate"></td></tr>
+        <tr><td>Разові витрати на іпотечне житло (PLN, ремонт, страхування, тощо)</td><td><input id="scenarioMortgageCosts"></td></tr>
+        <tr><td>Ріст ціни квартири % рік</td><td><input id="scenarioMortgageGrowth"></td></tr>
+        <tr><td>Податок на інвестиції %</td><td><input id="scenarioInvestTax"></td></tr>
+        <tr><td>Дивіденди % річних</td><td><input id="scenarioDividends"></td></tr>
+        <tr><td>Аренда без ком. (PLN/міс)</td><td><input id="scenarioRentBase"></td></tr>
+        <tr><td>Комунальні (PLN/міс)</td><td><input id="scenarioUtilities"></td></tr>
+        <tr><td>Зростання аренди % рік</td><td><input id="scenarioRentGrowth"></td></tr>
+        <tr><td>Зростання комунальних % рік</td><td><input id="scenarioUtilitiesGrowth"></td></tr>
+    </table>
+</div>
+
+<h3>Параметри для варіації (будуть порівнюватися)</h3>
+<table>
+    <tr>
+        <td>Термін іпотеки (роки)</td>
+        <td>Від: <input id="scenarioMortgageYearsFrom" value="20" style="width: 80px;"></td>
+        <td>До: <input id="scenarioMortgageYearsTo" value="30" style="width: 80px;"></td>
+        <td>Крок: <input id="scenarioMortgageYearsStep" value="5" style="width: 80px;"></td>
+    </tr>
+    <tr>
+        <td>Дохідність інвестицій %</td>
+        <td>Від: <input id="scenarioInvestRateFrom" value="5" style="width: 80px;"></td>
+        <td>До: <input id="scenarioInvestRateTo" value="10" style="width: 80px;"></td>
+        <td>Крок: <input id="scenarioInvestRateStep" value="1" style="width: 80px;"></td>
+    </tr>
+    <tr>
+        <td>Переплата (PLN/міс)</td>
+        <td>Від: <input id="scenarioExtraAmountFrom" value="5000" style="width: 80px;"></td>
+        <td>До: <input id="scenarioExtraAmountTo" value="10000" style="width: 80px;"></td>
+        <td>Крок: <input id="scenarioExtraAmountStep" value="2500" style="width: 80px;"></td>
+    </tr>
+    <tr>
+        <td>Переплата X% (для варіанту 2)</td>
+        <td>Від: <input id="scenarioExtraPctFrom" value="30" style="width: 80px;"></td>
+        <td>До: <input id="scenarioExtraPctTo" value="70" style="width: 80px;"></td>
+        <td>Крок: <input id="scenarioExtraPctStep" value="5" style="width: 80px;"></td>
+    </tr>
+    <tr>
+        <td>Платоспроможність (роки)</td>
+        <td>Від: <input id="scenarioSolvencyFrom" value="10" style="width: 80px;"></td>
+        <td>До: <input id="scenarioSolvencyTo" value="20" style="width: 80px;"></td>
+        <td>Крок: <input id="scenarioSolvencyStep" value="5" style="width: 80px;"></td>
+        <td style="color: #666; font-size: 12px;">(макс. = термін іпотеки)</td>
+    </tr>
+</table>
+
+<button id="calculateScenarios" style="margin-top: 20px; padding: 12px 24px; font-size: 16px; background: #2a7f62; color: white; border: none; border-radius: 4px; cursor: pointer;">
+    Розрахувати сценарії
+</button>
+
+<div id="scenariosResults" style="margin-top: 30px; display: none;">
+    <h3>Відсоток виграшів для кожного варіанту</h3>
+    <div style="margin-bottom: 20px; color: #666; font-size: 14px;">
+        Для кожного значення параметра показано відсоток випадків, коли відповідний варіант дає найкращий результат при фіксованих інших параметрах.
+    </div>
+    <div style="overflow-x: auto;">
+        <table id="scenariosTable">
+            <thead></thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    
+    <h3 style="margin-top: 40px;">Графіки порівняння</h3>
+    <div style="margin-bottom: 20px;">
+        <label>Параметр для графіка:</label>
+        <select id="chartParameter" style="margin-left: 10px; padding: 5px;">
+            <option value="mortgageYears">Термін іпотеки</option>
+            <option value="investRate">Дохідність інвестицій</option>
+            <option value="extraAmount">Переплата</option>
+            <option value="extraPct">Переплата X% (варіант 2)</option>
+            <option value="solvency">Платоспроможність</option>
+        </select>
+    </div>
+    <div id="scenariosChartContainer" style="max-width: 1100px; margin-top: 20px; background: #fff; padding: 20px; border-radius: 8px;">
+        <canvas id="scenariosChart"></canvas>
+    </div>
+</div>
+
+<script src="formulas.js?v=7"></script>
+<script src="script.js?v=10"></script>
+
+</body>
+</html>
