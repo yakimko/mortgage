@@ -1550,9 +1550,25 @@ function saveScenariosToLocalStorage() {
 /**
  * Load scenario inputs from localStorage
  * Also loads from main form localStorage if scenario data not found
+ * Sets default values from main page if no data in localStorage
  * @returns {boolean} true if any data was found in localStorage
  */
 function loadScenariosFromLocalStorage() {
+    // Default values from main page (index.html)
+    const defaults = {
+        mortgageAmount: '1800000',
+        mortgageDown: '25',
+        mortgageRate: '5.71',
+        mortgageCosts: '50000',
+        mortgageGrowth: '2',
+        investTax: '19',
+        dividends: '1',
+        rentBase: '6000',
+        utilities: '1500',
+        rentGrowth: '3',
+        utilitiesGrowth: '2'
+    };
+    
     const baseInputs = [
         { scenario: 'scenarioMortgageAmount', main: 'mortgageAmount' },
         { scenario: 'scenarioMortgageDown', main: 'mortgageDown' },
@@ -1577,7 +1593,7 @@ function loadScenariosFromLocalStorage() {
     
     let foundAny = false;
     
-    // Load base inputs - try scenarios localStorage first, then main form localStorage
+    // Load base inputs - try scenarios localStorage first, then main form localStorage, then defaults
     baseInputs.forEach(({ scenario, main }) => {
         const element = document.getElementById(scenario);
         if (element) {
@@ -1589,6 +1605,11 @@ function loadScenariosFromLocalStorage() {
                 savedValue = localStorage.getItem(`ipoteka_${main}`);
             }
             
+            // If still not found, use default value
+            if (savedValue === null || savedValue === '') {
+                savedValue = defaults[main] || null;
+            }
+            
             if (savedValue !== null && savedValue !== '') {
                 element.value = savedValue;
                 foundAny = true;
@@ -1596,7 +1617,7 @@ function loadScenariosFromLocalStorage() {
         }
     });
     
-    // Load range inputs - only from scenarios localStorage
+    // Load range inputs - only from scenarios localStorage (keep existing defaults from HTML)
     rangeInputs.forEach(id => {
         const element = document.getElementById(id);
         if (element) {
